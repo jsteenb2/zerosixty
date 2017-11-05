@@ -11,8 +11,8 @@ import (
 
 func TestStructPointers(t *testing.T) {
 	threeve := newTestCompany()
-	tad := &threeve.PointOfContact[0] // pre-pending with & returns pointer to value
-	t.Log(tad.Greet())
+	poc := &threeve.PointOfContact[0] // pre-pending with & returns pointer to value
+	t.Log(poc.Greet())
 
 	address := company.Address{63102, "Third Street", 900, "Shreevesport", "CA"}
 	deliveryCosts := threeve.Delivery(address) // automatically converts value semantic to pointer semantics
