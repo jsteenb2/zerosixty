@@ -46,3 +46,23 @@ func TestInterfaceSatisfiedImplicitly(t *testing.T) {
 	// t.Log(whoamiSlice[1].MailFormat())
 
 }
+
+func isCompany(who WhoAmIer) bool {
+	return who.WhoAmI() == "company"
+}
+
+func TestInterfaceAsInputType(t *testing.T) {
+	whoamiSlice := []WhoAmIer{
+		c.Contact{},
+		c.Address{},
+		c.PhoneNumber(5558675309),
+		c.Company{},
+		c.Person("ex"),
+	}
+
+	for idx, v := range whoamiSlice {
+		if isCompany(v) {
+			t.Logf("company found at idx: %d", idx)
+		}
+	}
+}
