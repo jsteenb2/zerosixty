@@ -5,3 +5,7 @@ type Contact struct {
 	PhoneNumber    PhoneNumber
 	Address
 }
+
+func (Contact) WhoAmI() string {
+	return "contact"
+}

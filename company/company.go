@@ -22,3 +22,7 @@ func (c *Company) Delivery(address Address) float64 {
 func (c Company) Founder() Person {
 	return c.PointOfContact[0]
 }
+
+func (Company) WhoAmI() string {
+	return "company"
+}

@@ -15,3 +15,7 @@ func (p PhoneNumber) AreaCode() int {
 	ac, _ := strconv.Atoi(string(p[0:3]))
 	return ac
 }
+
+func (PhoneNumber) WhoAmI() string {
+	return "phone number"
+}
