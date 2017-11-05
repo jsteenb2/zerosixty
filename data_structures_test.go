@@ -67,7 +67,7 @@ func TestSliceReassignments(t *testing.T) {
 	newSlice[2] = "food"
 	t.Log(strings.Join(newSlice, " "))
 
-	newerSlice := append(slice[:len(newSlice)-1], "indegestion")
+	newerSlice := append(slice[:len(newSlice)-1], "indigestion")
 	t.Log(strings.Join(newerSlice, " "))
 }
 
