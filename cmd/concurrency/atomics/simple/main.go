@@ -26,7 +26,6 @@ func incCounter(step int) {
 		} else {
 			fmt.Println(red, counter, nc)
 		}
-
 	}
 }
 
