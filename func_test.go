@@ -3,6 +3,33 @@ package zerosixty_test
 import "testing"
 
 /*
+	lexical scope in Go follows any {} pair
+	most nested scope will always override a more outter scope
+*/
+
+func TestLexicalScope(t *testing.T) {
+	lexical := "initial scope"
+	{
+		lexical := "second scope"
+		t.Log(lexical)
+		{
+			lexical := "third scope"
+			t.Log(lexical)
+			{
+				lexical := "fourth scope"
+				t.Log(lexical)
+				if lexical := "if scope"; lexical != "" {
+					t.Log(lexical)
+				}
+			}
+			t.Log(lexical)
+		}
+		t.Log(lexical)
+	}
+	t.Log(lexical)
+}
+
+/*
 	func types can be used in similar ways to an interface
 	achieve polymorphic behavior without structs w/ methods on it
 */
