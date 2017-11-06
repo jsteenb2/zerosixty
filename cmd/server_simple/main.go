@@ -24,6 +24,7 @@ func about(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/about", about)
+
 	fmt.Println("listening on port 3000")
 	http.ListenAndServe(":3000", nil)
 }

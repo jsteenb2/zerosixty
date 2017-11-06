@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -30,5 +31,7 @@ func about(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.Handle("/", logger(http.HandlerFunc(index)))
 	http.Handle("/about", logger(http.HandlerFunc(about)))
+
+	fmt.Println("listening on port: 3000")
 	http.ListenAndServe(":3000", nil)
 }
