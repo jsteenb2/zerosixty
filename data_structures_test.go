@@ -92,6 +92,9 @@ func TestMapTypeRangeOperator(t *testing.T) {
 
 	delete(aMap, "dc") // drops k/v pair
 
+	_, ok := aMap["dc"] // map lookups provide value and boolean return vals
+	t.Logf("dc found: %t", ok)
+
 	t.Log("aMap dc removed:")
 	for k, v := range aMap {
 		t.Logf("\t%s", k)
