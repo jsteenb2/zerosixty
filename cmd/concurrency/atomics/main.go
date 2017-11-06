@@ -34,12 +34,13 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(2)
 
+	// keyword `go` is how you make something run concurrently
 	go func() {
 		incCounter(1)
 		wg.Done()
 	}()
 	go func() {
-		incCounter(-2)
+		incCounter(-1)
 		wg.Done()
 	}()
 
