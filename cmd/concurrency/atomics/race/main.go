@@ -41,7 +41,6 @@ func main() {
 	wg.Add(numRoutines)
 
 	for i := -3; i < numRoutines-4; i++ {
-		// keyword `go` is how you make something run concurrently
 		go func(step int) {
 			incCounter(step)
 			wg.Done()
