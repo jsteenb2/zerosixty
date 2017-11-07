@@ -40,6 +40,7 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(numRoutines)
 
+	// wg.Done() not called enough to stop wg.Wait() from completing
 	for i := -3; i < numRoutines-4; i++ {
 		go func(step int) {
 			incCounter(step)
