@@ -1,0 +1,76 @@
+{
+	"info": {
+		"name": "golang or go home",
+		"_postman_id": "c6010010-a86b-f159-1abe-0b4cdbea01fa",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "english greet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Rhamyus\",\n\t\"greeting\": \"Greetings and salutations\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "arabic greet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"محمد\",\n\t\"greeting\": \"مرحبا\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "closer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Asynchronites\",\n\t\"greeting\": \"Farewell\",\n\t\"extras\": {\n\t\t\"one\": \"extra one\",\n\t\t\"two\": \"extra two\",\n\t\t\"threeve\": \"def isn't a number\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/close",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"close"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
