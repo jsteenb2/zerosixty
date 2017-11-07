@@ -7,6 +7,14 @@ import (
 	"time"
 )
 
+func main() {
+	http.Handle("/", logger(http.HandlerFunc(index)))
+	http.Handle("/about", logger(http.HandlerFunc(about)))
+
+	fmt.Println("listening on port: 3000")
+	http.ListenAndServe(":3000", nil)
+}
+
 func logger(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -26,12 +34,4 @@ func index(w http.ResponseWriter, r *http.Request) {
 func about(w http.ResponseWriter, r *http.Request) {
 	log.Println("Executing about")
 	w.Write([]byte("About page"))
-}
-
-func main() {
-	http.Handle("/", logger(http.HandlerFunc(index)))
-	http.Handle("/about", logger(http.HandlerFunc(about)))
-
-	fmt.Println("listening on port: 3000")
-	http.ListenAndServe(":3000", nil)
 }
