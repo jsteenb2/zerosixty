@@ -51,10 +51,7 @@ func TestSliceTypeWithRangeOperator(t *testing.T) {
 	// can extend with append
 	strSlice = append(strSlice, "and", "extendable")
 
-	t.Logf("strSlice after append:")
-	for idx, value := range strSlice {
-		t.Logf("\tid: %d, value: %v\n", idx, value)
-	}
+	t.Log("strSlice after append:\t", strSlice)
 }
 
 func TestSliceReassignments(t *testing.T) {
@@ -120,10 +117,10 @@ func TestZeroTypesOfReferenceTypes(t *testing.T) {
 	var zeroMap map[string]bool
 
 	if zeroSlice == nil {
-		t.Logf("zeroSlice == nil")
+		t.Log("zeroSlice == nil")
 	}
 
 	if zeroMap == nil {
-		t.Logf("zeroMap == nil")
+		t.Log("zeroMap == nil")
 	}
 }

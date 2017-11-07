@@ -5,18 +5,22 @@ import "testing"
 func TestVariableDeclarationsToZeroValues(t *testing.T) {
 	// All variables are automatically assigned to their zero value (not default value)
 	// creates the memory allocation for you
-	var anInt int
-	var anInt8 int8
-	var anInt32 int32
-	var anInt64 int64
-	var uInt uint64
-
-	var aFloat32 float32
-	var aFloat64 float64
-
 	var boolean bool
 
 	var aString string
+
+	var (
+		anInt   int
+		anInt8  int8
+		anInt32 int32
+		anInt64 int64
+		uInt    uint64
+	)
+
+	var (
+		aFloat32 float32
+		aFloat64 float64
+	)
 
 	t.Logf("anInt: type=%T, value=%v", anInt, anInt)
 	t.Logf("anInt8: type=%T, value=%v", anInt8, anInt8)
