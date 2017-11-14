@@ -216,7 +216,7 @@ run example: ```$ go test -v data_structures_test.go -run MapType```
 
 #### Zero Value of Reference Types
 
-Reference types, ```map``` and ```slice```, have a reference value of nil. 
+Reference types, ```map``` and ```slice```, have a reference value of ```nil```. 
 
 ```go
 var zeroSlice []bool
@@ -233,6 +233,210 @@ if zeroMap == nil {
 
 run example: ```$ go test -v data_structures_test.go -run ZeroTypes```
 
+### Named Types & Methods
+
+A small concerted example is something like a type phoneNumber that is a string.
+
+```go
+package company
+
+type PhoneNumber string
+
+func (p PhoneNumber) HumanReadable() string {
+	return fmt.Sprintf("(%s) %s-%s", p[0:3], p[3:6], p[6:])
+}
+
+func (p PhoneNumber) AreaCode() int {
+	ac, _ := strconv.Atoi(string(p[0:3]))
+	return ac
+}
+```
+
+run example: ```$ go test -v ./company/structs_named_types_test.go -run TestNamedTypeMethods```
+
+Named types are your friend in go. Take a simple int or string, throw a name on it, and a whole new world opens up to you. Check out duration from the std lib's [time package](https://golang.org/pkg/time/#Duration) below. 
+
+```go
+package time
+
+// other time pkg stuff...
+
+// A Duration represents the elapsed time between two instants
+// as an int64 nanosecond count. The representation limits the
+// largest representable duration to approximately 290 years.
+type Duration int64
+
+const (
+  	Nanosecond  Duration = 1
+  	Microsecond          = 1000 * Nanosecond
+  	Millisecond          = 1000 * Microsecond
+  	Second               = 1000 * Millisecond
+  	Minute               = 60 * Second
+  	Hour                 = 60 * Minute
+)
+
+func (d Duration) String() string {
+// Stringify logics here
+}
+
+// Nanoseconds returns the duration as an integer nanosecond count.
+func (d Duration) Nanoseconds() int64 { return int64(d) }
+
+// Seconds returns the duration as a floating point number of seconds.
+func (d Duration) Seconds() float64 {
+	sec := d / Second
+	nsec := d % Second
+	return float64(sec) + float64(nsec)/1e9
+}
+
+// Minutes returns the duration as a floating point number of minutes.
+func (d Duration) Minutes() float64 {
+	min := d / Minute
+	nsec := d % Minute
+	return float64(min) + float64(nsec)/(60*1e9)
+}
+
+// Hours returns the duration as a floating point number of hours.
+func (d Duration) Hours() float64 {
+	hour := d / Hour
+	nsec := d % Hour
+	return float64(hour) + float64(nsec)/(60*60*1e9)
+}
+  
+// Truncate returns the result of rounding d toward zero to a multiple of m.
+// If m <= 0, Truncate returns d unchanged.
+func (d Duration) Truncate(m Duration) Duration {
+	if m <= 0 {
+		return d
+	}
+	return d - d%m
+}
+
+// ... more time package stuff
+```
+
+The ```Duration``` type has a bunch of useful methods baked into it. With this simple named ```int64``` you can add methods that turn the ```int64``` into something with complex logic baked right in. Methods can attach to any named type or struct. 
+
 ### Structs
 
-Structs are whatever you make them be. You can tack on 
+Structs are whatever you make them be. You can tack on as many fields as you see fit. On top of that you can have methods on your struct types. 
+
+```go
+package company
+
+type Address struct {
+	ZipCode int
+	Street  string
+	Number  int
+	City    string
+	State   string
+}
+
+func (a Address) MailFormat() string {
+	return fmt.Sprintf("\n%d %s\n%s, %s %d", a.Number, a.Street, a.City, a.State, a.ZipCode)
+}
+
+func (Address) WhoAmI() string {
+	return "address"
+}
+```
+
+The Address struct has a number of different fields on it. The methods can access any field within a struct, both public and private. Fields can be accessed by ```.``` notation as seen in the above example.
+
+run example: ```$ go test -v ./company/structs_named_types_test.go -run StructTypeMethods```
+
+#### Embedding Structs
+
+Structs can be embedded into other structs. When this happens the embedded struct fields and methods can be accessed directly. This is called field/method promotion.
+
+```go
+package company 
+
+type Company struct {
+	Name string
+	Contact
+}
+
+type Contact struct {
+	PointOfContact []Person
+	PhoneNumber    PhoneNumber
+	Address
+}
+
+type Person string
+
+func (Company) WhoAmI() string {
+	return "company"
+}
+
+func (Contact) WhoAmI() string {
+	return "contact"
+}
+
+func (Person) WhoAmI() string {
+	return "person"
+}
+```
+
+Now when we call the structs after instantiating, we'll be able to see the field promotion. 
+
+```go
+address := company.Address{
+	ZipCode: 63102,
+	Street:  "Spruce Street",
+	Number:  900,
+}
+
+contact := company.Contact{
+	PointOfContact: []company.Person{"Pops", "RedGoatTea"},
+	PhoneNumber:    "3146782200",
+	Address:        address,
+}
+
+async := company.Company{"Asynchrony", contact}
+
+fmt.Println(async.Street) // nested 2 levels deep, output: Spruce Street
+fmt.Println(async.PhoneNumber) // nested 1 level deep, output: 3146782200
+```
+
+run example: ```$ go test -v ./company/structs_named_types_test.go -run StructFieldProm```
+
+One thing to note, if you have a name collision amongst fields or methods of nested structs, then you'll have to call out the specific nested struct you are meaning to access.
+
+```go
+address := company.Address{63102, "Spruce Street", 900, "St. Louis", "MO"}
+
+contact := company.Contact{
+	PointOfContact: []company.Person{"RedGoatTea", "Trigger"},
+	PhoneNumber:    "3146782200",
+	Address:        address,
+}
+
+async := company.Company{"Asynchrony", contact}
+
+fmt.Println(async.WhoAmI())   // output: company
+fmt.Println(contact.WhoAmI()) // output: contact
+fmt.Println(address.WhoAmI()) // output: address
+```
+
+run example: ```$ go test -v ./company/structs_named_types_test.go -run Collision```
+
+### Interface
+
+### Named Func Types
+
+#### Middleware
+
+### Packaging
+
+### Concurrency in Go
+
+#### Go routines
+
+#### Go scheduler
+
+### Atomic Funcs
+
+### Mutexes
+
+### Chans
