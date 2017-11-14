@@ -46,6 +46,22 @@ func TestStructFieldPromotion(t *testing.T) {
 	t.Log(async.PhoneNumber)
 }
 
+func TestStructEmbeddedNameCollision(t *testing.T) {
+	address := company.Address{63102, "Spruce Street", 900, "St. Louis", "MO"}
+
+	contact := company.Contact{
+		PointOfContact: []company.Person{"RedGoatTea", "Trigger"},
+		PhoneNumber:    "3146782200",
+		Address:        address,
+	}
+
+	async := company.Company{"Asynchrony", contact}
+
+	t.Log(async.WhoAmI())
+	t.Log(contact.WhoAmI())
+	t.Log(address.WhoAmI())
+}
+
 func TestStructEmbeddedMethodPromotion(t *testing.T) {
 	// embedded type methods are also promoted same as fields
 
