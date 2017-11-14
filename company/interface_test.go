@@ -44,7 +44,6 @@ func TestInterfaceSatisfiedImplicitly(t *testing.T) {
 	// the compiler knows nothing of the implementation of Address struct
 	// based on the WhoAmIer interface
 	// t.Log(whoamiSlice[1].MailFormat())
-
 }
 
 func isCompany(who WhoAmIer) bool {
