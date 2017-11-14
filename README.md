@@ -106,6 +106,63 @@ Different types are not interchangeable without conversion. Compiler will crap t
 
 run example: ```$ go test -v var_declarations_test.go -run Conversion```
 
+## Functions
+
+A function in Go, ```func```, are easy to work with. Use the keyword ```func``` to create a func, specify the input params and output params. There are a number of ways to set types on the input params.
+
+```go
+func odder(anInt int) int {
+	return anInt % 1
+}
+
+func adder(anInt, anotherInt, thirdInt int) int {
+	// input params that share types can have the type associated to the last param
+	// all params without type in front of that param get same type associated
+	return anInt + anotherInt + thirdInt
+}
+```
+
+run example: ```$ go test -v func_test.go -run BasicFunc```
+
+When having multiple input params that the same type, you can condense the type from the leading params and just put it on the last input param. Input params can have a primitive type, a struct type, or an interface type as we'll see in a bit.
+
+
+Input param types can be mixed and matched however you see fit. Functions in Go can be variadic as well, meaning you can specify and undetermined number of inputs (of same type) with the ```...``` syntax. Your return params can be named as well. Funcs can be set to variables as well. See the example below.
+
+```go
+func variadicFunc(msg string, ints ...int) (output string) {
+	// named output type used here to showcase you can indeed name an output
+	var sum int
+	for _, v := range ints {
+		sum += v
+	}
+	output = fmt.Sprintf("%s: %d", msg, sum)
+	return
+}
+
+fn := variadicFunc
+
+fmt.Println(fn("what's my total", 1, 2, 3, 4)) // output: what's my total: 10
+``` 
+
+run example: ```$ go test -v func_test.go -run Variadic```
+
+Anonymous funcs can also be created, and closure is fully available to you then as well as any other time you create a func.
+
+```go
+func TestFuncClosure(t *testing.T) {
+	msg := "I'm getting closured"
+
+	fn := func(anInt int) string {
+		return fmt.Sprintf("%s\n\tinput: %d", msg, anInt)
+	}
+
+	t.Log(fn(3333))
+}
+```
+
+run example: ```$ go test -v func_test.go -run Closure```
+
 ### Data Structures
 
 #### Arrays
@@ -422,6 +479,68 @@ fmt.Println(address.WhoAmI()) // output: address
 run example: ```$ go test -v ./company/structs_named_types_test.go -run Collision```
 
 ### Interface
+
+Interfaces are one of the places where Go should be most admired. Go is a structurally typed language and this makes all interfaces satisfied implicitly. This opens the door to polymorphic behavior in our code. You will get something akin to duck typing in Go, a strongly typed programming language. Here's a small example.
+
+```go
+type WhoAmIer interface {
+	WhoAmI() string
+}
+```
+
+The interface says: "to satsify me, you need to have a WhoAmI method on the type with the exact signature I say you should have". Any struct or named type with the exact method name and signature will satisfy the interface.
+
+```go
+type WhoAmIer interface {
+	WhoAmI() string
+}
+
+whoamiSlice := []WhoAmIer{
+	c.Contact{},
+	c.Address{},
+	c.PhoneNumber(5558675309),
+	c.Company{},
+	c.Person("ex"),
+}
+
+for _, v := range whoamiSlice {
+	fmt.Println(v.WhoAmI()) // hello duck typing?
+}
+
+// the line below does not work
+// the compiler knows nothing of the implementation of Address struct
+// based on the WhoAmIer interface
+// fmt.Println(whoamiSlice[1].MailFormat())
+```
+
+run example: ```$ go test -v ./company/interface_test.go -run Implicitly
+```
+
+All the types of the slice implement the interface, so they are all valid elements of the ```whoamiSlice```. If you attempt to access a method that isn't called out in the interface, the compiler will blow up on you.
+
+A ```func``` can specify an interface as the type for an input parameter. When this is done, you will be able to access the specific method(s) spelled out in your interface type, but none others. You will obtain polymorphic behavior for your ```func``` params.
+
+```go
+func isCompany(who WhoAmIer) bool {
+	return who.WhoAmI() == "company"
+}
+
+whoamiSlice := []WhoAmIer{
+	c.Contact{},
+	c.Address{},
+	c.PhoneNumber(5558675309),
+	c.Company{},
+	c.Person("ex"),
+}
+
+for idx, v := range whoamiSlice {
+	if isCompany(v) {
+		fmt.Printf("company found at idx: %d", idx)
+	}
+}
+```
+
+run example: ```$ go test -v ./company/interface_test.go -run AsInput```
 
 ### Named Func Types
 

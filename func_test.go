@@ -1,6 +1,9 @@
 package zerosixty_test
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 /*
 	lexical scope in Go follows any {} pair
@@ -27,6 +30,47 @@ func TestLexicalScope(t *testing.T) {
 		t.Log(lexical)
 	}
 	t.Log(lexical)
+}
+
+func odder(anInt int) int {
+	return anInt % 1
+}
+
+func adder(anInt, anotherInt, thirdInt int) int {
+	// input params that share types can have the type associated to the last param
+	// all params without type in front of that param get same type associated
+	return anInt + anotherInt + thirdInt
+}
+
+func TestBasicFuncs(t *testing.T) {
+	t.Log(odder(3))
+	t.Log(adder(1, 2, 3))
+}
+
+func variadicFunc(msg string, ints ...int) (output string) {
+	// named output type used here to showcase you can indeed name an output
+	var sum int
+	for _, v := range ints {
+		sum += v
+	}
+	output = fmt.Sprintf("%s: %d", msg, sum)
+	return
+}
+
+func TestVariadicFunc(t *testing.T) {
+	fn := variadicFunc // can set funcs to a var
+
+	t.Log(fn("what's my total", 1, 2, 3, 4))
+}
+
+func TestFuncClosure(t *testing.T) {
+	msg := "I'm getting closured"
+
+	fn := func(anInt int) string {
+		return fmt.Sprintf("%s\n\tinput: %d", msg, anInt)
+	}
+
+	t.Log(fn(3333))
 }
 
 /*
