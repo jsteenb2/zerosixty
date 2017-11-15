@@ -513,8 +513,7 @@ for _, v := range whoamiSlice {
 // fmt.Println(whoamiSlice[1].MailFormat())
 ```
 
-run example: ```$ go test -v ./company/interface_test.go -run Implicitly
-```
+run example: ```$ go test -v ./company/interface_test.go -run Implicitly```
 
 All the types of the slice implement the interface, so they are all valid elements of the ```whoamiSlice```. If you attempt to access a method that isn't called out in the interface, the compiler will blow up on you.
 
